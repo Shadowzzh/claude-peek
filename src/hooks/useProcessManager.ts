@@ -27,7 +27,7 @@ export function useProcessManager() {
 	// 键盘事件
 	useInput((input, key) => {
 		if (showConfirm) {
-			if (input === "y" || input === "Y") {
+			if (input === "y" || input === "Y" || key.return) {
 				const proc = processes[selectedIndex];
 				if (proc) {
 					killProcess(proc.pid);

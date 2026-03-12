@@ -10,10 +10,11 @@ export function App() {
 		useProcessManager();
 
 	return (
-		<Box flexDirection="column" padding={1}>
+		<Box flexDirection="column">
 			<Text bold color="cyan">
 				Claude Code 进程管理器
 			</Text>
+
 			<Text dimColor> </Text>
 
 			<ProcessList processes={processes} selectedIndex={selectedIndex} />

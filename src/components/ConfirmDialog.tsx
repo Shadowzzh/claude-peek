@@ -11,7 +11,7 @@ export function ConfirmDialog({ pid, visible }: ConfirmDialogProps) {
 
 	return (
 		<Box borderStyle="round" borderColor="red" padding={1}>
-			<Text color="red">确认杀死进程 {pid}? (y/n)</Text>
+			<Text color="red">确认杀死进程 {pid}? (y/回车:确认 n/Esc:取消)</Text>
 		</Box>
 	);
 }
