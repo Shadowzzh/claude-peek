@@ -1,13 +1,8 @@
 import { execSync } from "node:child_process";
+import type { ProcessInfo } from "../types.js";
+import { formatEtime } from "./format.js";
 
-export interface ProcessInfo {
-	pid: number;
-	cpu: string;
-	mem: string;
-	etime: string;
-	cwd: string;
-	command: string;
-}
+export type { ProcessInfo } from "../types.js";
 
 /**
  * 获取所有 Claude Code 相关进程
@@ -63,27 +58,6 @@ export function getClaudeProcesses(): ProcessInfo[] {
 		console.error("获取进程列表失败:", error);
 		return [];
 	}
-}
-
-/**
- * 格式化运行时长为 HH:MM:SS
- */
-function formatEtime(etime: string): string {
-	const parts = etime.trim().split(/[-:]/);
-	if (parts.length === 2) {
-		// MM:SS
-		return `00:${parts[0].padStart(2, "0")}:${parts[1].padStart(2, "0")}`;
-	}
-	if (parts.length === 3) {
-		// HH:MM:SS
-		return `${parts[0].padStart(2, "0")}:${parts[1].padStart(2, "0")}:${parts[2].padStart(2, "0")}`;
-	}
-	if (parts.length === 4) {
-		// DD-HH:MM:SS
-		const hours = Number.parseInt(parts[0]) * 24 + Number.parseInt(parts[1]);
-		return `${String(hours).padStart(2, "0")}:${parts[2].padStart(2, "0")}:${parts[3].padStart(2, "0")}`;
-	}
-	return "00:00:00";
 }
 
 /**
