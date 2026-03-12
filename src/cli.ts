@@ -10,7 +10,9 @@ export function createCli() {
 
 	program
 		.name("claude-ps")
-		.description("TUI application for viewing and managing Claude Code processes")
+		.description(
+			"TUI application for viewing and managing Claude Code processes",
+		)
 		.version(version);
 
 	program
