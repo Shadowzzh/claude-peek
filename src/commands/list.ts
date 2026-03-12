@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import { getClaudeProcesses } from "../lib/process.js";
+import type { ProcessInfo } from "../types.js";
 
 export function listCommand(options: { json?: boolean }) {
 	const processes = getClaudeProcesses();
