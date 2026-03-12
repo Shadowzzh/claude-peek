@@ -9,7 +9,7 @@
 	},
 	"files": ["dist"],
 	"scripts": {
-		"dev": "tsx src/index.tsx",
+		"dev": "tsx src/index.ts",
 		"build": "tsup",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
