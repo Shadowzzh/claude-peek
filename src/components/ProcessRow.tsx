@@ -8,16 +8,17 @@ interface ProcessRowProps {
 }
 
 export function ProcessRow({ proc, isSelected }: ProcessRowProps) {
+	const rowWidth = 10;
 	return (
 		<Text
 			backgroundColor={isSelected ? "blue" : undefined}
 			color={isSelected ? "white" : undefined}
 		>
-			{String(proc.pid).padEnd(8)}
-			{proc.cpu.padEnd(8)}
-			{proc.mem.padEnd(8)}
-			{proc.etime.padEnd(12)}
-			{proc.cwd}
+			{String(proc.pid).padEnd(rowWidth)}
+			{String(proc.cpu).padEnd(rowWidth)}
+			{String(proc.mem).padEnd(rowWidth)}
+			{String(proc.etime).padEnd(rowWidth)}
+			{String(proc.cwd).padEnd(0)}
 		</Text>
 	);
 }

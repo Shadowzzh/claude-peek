@@ -9,6 +9,8 @@ interface ProcessListProps {
 }
 
 export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
+	const rowWidth = 10;
+
 	if (processes.length === 0) {
 		return <Text color="yellow">未找到运行中的 Claude Code 进程</Text>;
 	}
@@ -17,10 +19,11 @@ export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
 		<Box flexDirection="column">
 			{/* 表头 */}
 			<Text bold color="gray">
-				{"PID".padEnd(8)}
-				{"CPU".padEnd(8)}
-				{"MEM".padEnd(8)}
-				{"运行时长".padEnd(12)}工作目录
+				{"PID".padEnd(rowWidth)}
+				{"CPU".padEnd(rowWidth)}
+				{"MEM".padEnd(rowWidth)}
+				{"运行时长".padEnd(rowWidth)}
+				{"工作目录".padEnd(0)}
 			</Text>
 
 			{/* 进程列表 */}
