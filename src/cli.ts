@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 import { Command } from "commander";
 import { listCommand } from "./commands/list.js";
+import { installCommand } from "./commands/install.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json");
@@ -21,6 +22,13 @@ export function createCli() {
 		.option("--json", "以 JSON 格式输出")
 		.action((options) => {
 			listCommand(options);
+		});
+
+	program
+		.command("install")
+		.description("安装 hook 脚本到 ~/.claude/hooks/claude-ps")
+		.action(() => {
+			installCommand();
 		});
 
 	return program;

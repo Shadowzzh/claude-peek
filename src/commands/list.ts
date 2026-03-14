@@ -27,8 +27,10 @@ export function listCommand(options: { json?: boolean }) {
 
 	// 进程列表
 	for (const proc of processes) {
+		const summary = proc.session?.summary || "N/A";
+		const truncated = summary.length > 40 ? `${summary.slice(0, 37)}...` : summary;
 		console.log(
-			`${String(proc.pid).padEnd(8)}${proc.cpu.padEnd(8)}${proc.mem.padEnd(8)}${proc.etime.padEnd(12)}${proc.projectName.padEnd(20)}${chalk.dim(proc.session?.summary || "N/A")}`,
+			`${String(proc.pid).padEnd(8)}${proc.cpu.padEnd(8)}${proc.mem.padEnd(8)}${proc.etime.padEnd(12)}${proc.projectName.padEnd(20)}${chalk.dim(truncated)}`,
 		);
 	}
 

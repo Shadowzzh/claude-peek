@@ -20,8 +20,8 @@ export function getSessionIdFromPid(pid: number): string | null {
 		for (const line of lines) {
 			try {
 				const record = JSON.parse(line);
-				if (record.pid === pid && record.session_id) {
-					return record.session_id;
+				if (record.pid === pid && record.sessionId) {
+					return record.sessionId;
 				}
 			} catch {
 				// ignore parse errors
@@ -37,7 +37,10 @@ export function getSessionIdFromPid(pid: number): string | null {
 /**
  * 获取进程的会话 ID（优先使用 PID 映射）
  */
-export function getSessionIdFromProcess(pid: number, cwd: string): string | null {
+export function getSessionIdFromProcess(
+	pid: number,
+	cwd: string,
+): string | null {
 	// 优先从 PID 映射获取
 	const sessionId = getSessionIdFromPid(pid);
 	if (sessionId) {
@@ -87,7 +90,7 @@ export function cwdToProjectDir(cwd: string): string {
 }
 
 /**
- * 从 history.jsonl 获取会话的最后一条用户消息
+ * 从 history.jsonl 获取会话的第一条用户消息
  */
 function getLastUserMessage(sessionId: string): string | null {
 	try {
@@ -99,8 +102,8 @@ function getLastUserMessage(sessionId: string): string | null {
 		const content = readFileSync(historyPath, "utf-8");
 		const lines = content.trim().split("\n");
 
-		// 从后往前查找匹配会话 ID 的记录
-		for (let i = lines.length - 1; i >= 0; i--) {
+		// 从前往后查找匹配会话 ID 的第一条记录
+		for (let i = 0; i < lines.length; i++) {
 			try {
 				const record = JSON.parse(lines[i]);
 				if (record.sessionId === sessionId && record.display) {
