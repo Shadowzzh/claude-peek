@@ -1,3 +1,11 @@
+export interface SessionInfo {
+	sessionId: string;
+	summary: string;
+	messageCount: number;
+	created: string;
+	modified: string;
+}
+
 export interface ProcessInfo {
 	pid: number;
 	cpu: string;
@@ -5,4 +13,6 @@ export interface ProcessInfo {
 	etime: string;
 	cwd: string;
 	command: string;
+	projectName: string;
+	session?: SessionInfo;
 }

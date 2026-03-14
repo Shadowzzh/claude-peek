@@ -23,7 +23,8 @@ export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
 				{"CPU".padEnd(rowWidth)}
 				{"MEM".padEnd(rowWidth)}
 				{"运行时长".padEnd(rowWidth)}
-				{"工作目录".padEnd(0)}
+				{"项目名".padEnd(20)}
+				{"会话".padEnd(0)}
 			</Text>
 
 			{/* 进程列表 */}

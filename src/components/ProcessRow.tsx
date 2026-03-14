@@ -18,7 +18,8 @@ export function ProcessRow({ proc, isSelected }: ProcessRowProps) {
 			{String(proc.cpu).padEnd(rowWidth)}
 			{String(proc.mem).padEnd(rowWidth)}
 			{String(proc.etime).padEnd(rowWidth)}
-			{String(proc.cwd).padEnd(0)}
+			{String(proc.projectName).padEnd(20)}
+			{String(proc.session?.summary || "N/A").padEnd(0)}
 		</Text>
 	);
 }

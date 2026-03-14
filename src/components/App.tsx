@@ -2,11 +2,12 @@ import { Box, Text } from "ink";
 import React from "react";
 import { useProcessManager } from "../hooks/useProcessManager.js";
 import { ConfirmDialog } from "./ConfirmDialog.js";
+import { DetailDialog } from "./DetailDialog.js";
 import { HelpBar } from "./HelpBar.js";
 import { ProcessList } from "./ProcessList.js";
 
 export function App() {
-	const { processes, selectedIndex, showConfirm, selectedProcess } =
+	const { processes, selectedIndex, showConfirm, showDetail, selectedProcess } =
 		useProcessManager();
 
 	return (
@@ -21,7 +22,9 @@ export function App() {
 
 			<Text dimColor> </Text>
 
-			{showConfirm && selectedProcess ? (
+			{showDetail && selectedProcess ? (
+				<DetailDialog proc={selectedProcess} visible={showDetail} />
+			) : showConfirm && selectedProcess ? (
 				<ConfirmDialog pid={selectedProcess.pid} visible={showConfirm} />
 			) : (
 				<HelpBar />

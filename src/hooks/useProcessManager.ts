@@ -7,6 +7,7 @@ export function useProcessManager() {
 	const [processes, setProcesses] = useState<ProcessInfo[]>([]);
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [showConfirm, setShowConfirm] = useState(false);
+	const [showDetail, setShowDetail] = useState(false);
 	const { exit } = useApp();
 
 	const loadProcesses = useCallback(() => {
@@ -26,6 +27,13 @@ export function useProcessManager() {
 
 	// 键盘事件
 	useInput((input, key) => {
+		if (showDetail) {
+			if (key.escape || input === "v") {
+				setShowDetail(false);
+			}
+			return;
+		}
+
 		if (showConfirm) {
 			if (input === "y" || input === "Y" || key.return) {
 				const proc = processes[selectedIndex];
@@ -44,6 +52,8 @@ export function useProcessManager() {
 			setSelectedIndex((i) => Math.max(0, i - 1));
 		} else if (key.downArrow || input === "j") {
 			setSelectedIndex((i) => Math.min(processes.length - 1, i + 1));
+		} else if (input === "v" && processes.length > 0) {
+			setShowDetail(true);
 		} else if (input === "d" && processes.length > 0) {
 			setShowConfirm(true);
 		} else if (input === "r") {
@@ -57,6 +67,7 @@ export function useProcessManager() {
 		processes,
 		selectedIndex,
 		showConfirm,
+		showDetail,
 		selectedProcess: processes[selectedIndex],
 	};
 }

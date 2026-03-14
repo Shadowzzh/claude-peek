@@ -20,7 +20,7 @@ export function listCommand(options: { json?: boolean }) {
 	// 表头
 	console.log(
 		chalk.cyan(
-			`${"PID".padEnd(8)}${"CPU".padEnd(8)}${"MEM".padEnd(8)}${"运行时长".padEnd(12)}工作目录`,
+			`${"PID".padEnd(8)}${"CPU".padEnd(8)}${"MEM".padEnd(8)}${"运行时长".padEnd(12)}${"项目名".padEnd(20)}会话`,
 		),
 	);
 	console.log(chalk.gray("─".repeat(80)));
@@ -28,7 +28,7 @@ export function listCommand(options: { json?: boolean }) {
 	// 进程列表
 	for (const proc of processes) {
 		console.log(
-			`${String(proc.pid).padEnd(8)}${proc.cpu.padEnd(8)}${proc.mem.padEnd(8)}${proc.etime.padEnd(12)}${chalk.dim(proc.cwd)}`,
+			`${String(proc.pid).padEnd(8)}${proc.cpu.padEnd(8)}${proc.mem.padEnd(8)}${proc.etime.padEnd(12)}${proc.projectName.padEnd(20)}${chalk.dim(proc.session?.summary || "N/A")}`,
 		);
 	}
 
