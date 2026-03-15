@@ -1,7 +1,7 @@
 import { createRequire } from "node:module";
 import { Command } from "commander";
-import { listCommand } from "./commands/list.js";
 import { installCommand } from "./commands/install.js";
+import { listCommand } from "./commands/list.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json");

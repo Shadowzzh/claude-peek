@@ -1,5 +1,6 @@
 import { Text } from "ink";
 import React from "react";
+import { padEndByWidth } from "../lib/format.js";
 import type { ProcessInfo } from "../types.js";
 
 interface ProcessRowProps {
@@ -14,12 +15,12 @@ export function ProcessRow({ proc, isSelected }: ProcessRowProps) {
 			backgroundColor={isSelected ? "blue" : undefined}
 			color={isSelected ? "white" : undefined}
 		>
-			{String(proc.pid).padEnd(rowWidth)}
-			{String(proc.cpu).padEnd(rowWidth)}
-			{String(proc.mem).padEnd(rowWidth)}
-			{String(proc.etime).padEnd(rowWidth)}
-			{String(proc.projectName).padEnd(20)}
-			{String(proc.session?.summary || "N/A").padEnd(0)}
+			{padEndByWidth(String(proc.pid), rowWidth)}
+			{padEndByWidth(String(proc.cpu), rowWidth)}
+			{padEndByWidth(String(proc.mem), rowWidth)}
+			{padEndByWidth(String(proc.etime), rowWidth)}
+			{padEndByWidth(String(proc.projectName), 20)}
+			{String(proc.session?.summary || "N/A")}
 		</Text>
 	);
 }

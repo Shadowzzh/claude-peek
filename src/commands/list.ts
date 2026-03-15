@@ -1,6 +1,6 @@
 import chalk from "chalk";
+import { padEndByWidth } from "../lib/format.js";
 import { getClaudeProcesses } from "../lib/process.js";
-import type { ProcessInfo } from "../types.js";
 
 export function listCommand(options: { json?: boolean }) {
 	const processes = getClaudeProcesses();
@@ -20,7 +20,7 @@ export function listCommand(options: { json?: boolean }) {
 	// 表头
 	console.log(
 		chalk.cyan(
-			`${"PID".padEnd(8)}${"CPU".padEnd(8)}${"MEM".padEnd(8)}${"运行时长".padEnd(12)}${"项目名".padEnd(20)}会话`,
+			`${padEndByWidth("PID", 8)}${padEndByWidth("CPU", 8)}${padEndByWidth("MEM", 8)}${padEndByWidth("运行时长", 12)}${padEndByWidth("项目名", 20)}会话`,
 		),
 	);
 	console.log(chalk.gray("─".repeat(80)));
@@ -28,9 +28,10 @@ export function listCommand(options: { json?: boolean }) {
 	// 进程列表
 	for (const proc of processes) {
 		const summary = proc.session?.summary || "N/A";
-		const truncated = summary.length > 40 ? `${summary.slice(0, 37)}...` : summary;
+		const truncated =
+			summary.length > 40 ? `${summary.slice(0, 37)}...` : summary;
 		console.log(
-			`${String(proc.pid).padEnd(8)}${proc.cpu.padEnd(8)}${proc.mem.padEnd(8)}${proc.etime.padEnd(12)}${proc.projectName.padEnd(20)}${chalk.dim(truncated)}`,
+			`${padEndByWidth(String(proc.pid), 8)}${padEndByWidth(proc.cpu, 8)}${padEndByWidth(proc.mem, 8)}${padEndByWidth(proc.etime, 12)}${padEndByWidth(proc.projectName, 20)}${chalk.dim(truncated)}`,
 		);
 	}
 

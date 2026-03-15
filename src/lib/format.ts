@@ -1,3 +1,5 @@
+import stringWidth from "string-width";
+
 /**
  * 格式化运行时长为 HH:MM:SS
  */
@@ -17,4 +19,13 @@ export function formatEtime(etime: string): string {
 		return `${String(hours).padStart(2, "0")}:${parts[2].padStart(2, "0")}:${parts[3].padStart(2, "0")}`;
 	}
 	return "00:00:00";
+}
+
+/**
+ * 根据显示宽度填充字符串
+ */
+export function padEndByWidth(str: string, targetWidth: number): string {
+	const currentWidth = stringWidth(str);
+	const padding = Math.max(0, targetWidth - currentWidth);
+	return str + " ".repeat(padding);
 }

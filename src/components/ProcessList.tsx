@@ -1,5 +1,6 @@
 import { Box, Text } from "ink";
 import React from "react";
+import { padEndByWidth } from "../lib/format.js";
 import type { ProcessInfo } from "../types.js";
 import { ProcessRow } from "./ProcessRow.js";
 
@@ -19,12 +20,12 @@ export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
 		<Box flexDirection="column">
 			{/* 表头 */}
 			<Text bold color="gray">
-				{"PID".padEnd(rowWidth)}
-				{"CPU".padEnd(rowWidth)}
-				{"MEM".padEnd(rowWidth)}
-				{"运行时长".padEnd(rowWidth)}
-				{"项目名".padEnd(20)}
-				{"会话".padEnd(0)}
+				{padEndByWidth("PID", rowWidth)}
+				{padEndByWidth("CPU", rowWidth)}
+				{padEndByWidth("MEM", rowWidth)}
+				{padEndByWidth("运行时长", rowWidth)}
+				{padEndByWidth("项目名", 20)}
+				{"会话"}
 			</Text>
 
 			{/* 进程列表 */}

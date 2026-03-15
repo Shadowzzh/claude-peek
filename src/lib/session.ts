@@ -83,13 +83,6 @@ function getSessionIdFromHistory(projectPath: string): string | null {
 }
 
 /**
- * 将工作目录路径转换为项目目录名
- */
-export function cwdToProjectDir(cwd: string): string {
-	return cwd.replace(/\//g, "-");
-}
-
-/**
  * 从 history.jsonl 获取会话的第一条用户消息
  */
 function getLastUserMessage(sessionId: string): string | null {
