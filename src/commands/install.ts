@@ -28,7 +28,7 @@ interface Settings {
 }
 
 export function installCommand() {
-	const targetDir = join(homedir(), ".claude", "hooks", "claude-ps");
+	const targetDir = join(homedir(), ".claude", "hooks", "ccpeek");
 	const sourceDir = resolve(process.cwd(), "hooks");
 	const settingsFile = join(homedir(), ".claude", "settings.json");
 	const mappingFile = join(homedir(), ".claude", "session-mappings.jsonl");
@@ -63,32 +63,28 @@ export function installCommand() {
 
 	const recordHook: Hook = {
 		type: "command",
-		command: "~/.claude/hooks/claude-ps/record-session.sh",
+		command: "~/.claude/hooks/ccpeek/record-session.sh",
 	};
 	const cleanupHook: Hook = {
 		type: "command",
-		command: "~/.claude/hooks/claude-ps/cleanup-session.sh",
+		command: "~/.claude/hooks/ccpeek/cleanup-session.sh",
 	};
 
 	const startEntry = settings.hooks.SessionStart.find((e) =>
-		e.hooks.some((h) => h.command.includes("claude-ps")),
+		e.hooks.some((h) => h.command.includes("ccpeek")),
 	);
 	if (startEntry) {
-		const idx = startEntry.hooks.findIndex((h) =>
-			h.command.includes("claude-ps"),
-		);
+		const idx = startEntry.hooks.findIndex((h) => h.command.includes("ccpeek"));
 		startEntry.hooks[idx] = recordHook;
 	} else {
 		settings.hooks.SessionStart.push({ hooks: [recordHook] });
 	}
 
 	const endEntry = settings.hooks.SessionEnd.find((e) =>
-		e.hooks.some((h) => h.command.includes("claude-ps")),
+		e.hooks.some((h) => h.command.includes("ccpeek")),
 	);
 	if (endEntry) {
-		const idx = endEntry.hooks.findIndex((h) =>
-			h.command.includes("claude-ps"),
-		);
+		const idx = endEntry.hooks.findIndex((h) => h.command.includes("ccpeek"));
 		endEntry.hooks[idx] = cleanupHook;
 	} else {
 		settings.hooks.SessionEnd.push({ hooks: [cleanupHook] });

@@ -13,7 +13,7 @@ export function createCli() {
 	const program = new Command();
 
 	program
-		.name("claude-ps")
+		.name("ccpeek")
 		.description(
 			"TUI application for viewing and managing Claude Code processes",
 		)
@@ -50,7 +50,7 @@ export function createCli() {
 
 	program
 		.command("setup")
-		.description("安装 hook 脚本到 ~/.claude/hooks/claude-ps")
+		.description("安装 hook 脚本到 ~/.claude/hooks/ccpeek")
 		.action(() => {
 			installCommand();
 		});

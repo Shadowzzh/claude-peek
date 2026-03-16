@@ -1,6 +1,6 @@
 ---
 name: session-lookup
-description: claude-ps 会话查找实现逻辑
+description: ccpeek 会话查找实现逻辑
 ---
 
 ## 架构
@@ -12,20 +12,20 @@ description: claude-ps 会话查找实现逻辑
     "SessionStart": [{
       "hooks": [{
         "type": "command",
-        "command": "~/.claude/hooks/claude-ps/record-session.sh"
+        "command": "~/.claude/hooks/ccpeek/record-session.sh"
       }]
     }],
     "SessionEnd": [{
       "hooks": [{
         "type": "command",
-        "command": "~/.claude/hooks/claude-ps/cleanup-session.sh"
+        "command": "~/.claude/hooks/ccpeek/cleanup-session.sh"
       }]
     }]
   }
 }
 ```
 
-**Hook 脚本** (`~/.claude/hooks/claude-ps/`)
+**Hook 脚本** (`~/.claude/hooks/ccpeek/`)
 - `record-session.sh` - 从 stdin 获取 SessionID，遍历进程树找 claude PID，写入映射
 - `cleanup-session.sh` - 清理已退出进程的映射记录
 
@@ -45,7 +45,7 @@ Claude 启动 → SessionStart hook → record-session.sh
   ↓
 写入 ~/.claude/session-mappings.jsonl: {"pid":123,"sessionId":"xxx",...}
   ↓
-claude-ps 读取映射 → 匹配 PID → 获取 SessionID
+ccpeek 读取映射 → 匹配 PID → 获取 SessionID
   ↓
 从 history.jsonl 读取第一条用户消息 → 显示
 ```

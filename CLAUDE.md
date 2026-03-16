@@ -10,7 +10,7 @@
 
 # Project Architecture
 
-<overview>claude-pm = Claude Code 进程管理器，CLI + TUI 双模式</overview>
+<overview>ccpeek = Claude Code 进程管理器，CLI + TUI 双模式</overview>
 
 <cli file="src/cli.ts">list | detail [pid] | session [pid] | install</cli>
 

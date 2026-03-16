@@ -28,7 +28,7 @@ export function getClaudeProcesses(): ProcessInfo[] {
 				// 获取命令部分（从第5个元素开始）
 				const command = parts.slice(4).join(" ");
 
-				// 匹配以 "claude " 开头的命令（注意空格，避免匹配 claude-ps 等）
+				// 匹配以 "claude " 开头的命令（注意空格，避免匹配 ccpeek 等）
 				// 或者匹配 "node ... claude" 这种情况
 				const isClaudeCommand =
 					command.startsWith("claude ") ||
@@ -38,7 +38,7 @@ export function getClaudeProcesses(): ProcessInfo[] {
 				// 排除当前进程和其他 claude 工具
 				const isNotSelf = !line.includes(String(currentPid));
 				const isNotOtherTool =
-					!command.includes("claude-ps") && !command.includes("claude-hook");
+					!command.includes("ccpeek") && !command.includes("claude-hook");
 
 				return isClaudeCommand && isNotSelf && isNotOtherTool;
 			})
