@@ -1,10 +1,22 @@
-# claude-peek
+<h1 align="center">Claude Code Peek</h1>
 
-**Claude Code 管理器**
+<div align="center">
 
-<!-- GIF/截图位置 -->
+**快速查看 Claude Code 进程状态和会话内容**
 
-## 为什么需要它
+
+
+*一眼看清所有进程，快速查看对话，一键干掉卡死实例*
+
+[简介](#简介) • [安装](#安装) • [使用指南](#使用指南) • [工作原理](#工作原理)
+
+</div>
+
+<p align="center">
+    <img src="./public/demo.webp" width="800">
+</p>
+
+## 简介
 
 快速查看某个 Claude Code 的进程状态和会话内容，尤其是当你有多个 Claude Code 实例在运行时。
 
@@ -26,7 +38,7 @@ ccpeek setup  # 安装 Claude Code Hook 脚本
 pnpm install && pnpm build
 ```
 
-## 使用
+## 使用指南
 
 ### 交互模式
 
