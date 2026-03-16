@@ -1,4 +1,4 @@
-# @zhangziheng/claude-peek
+# claude-peek
 
 **Claude Code 管理器**
 
@@ -6,7 +6,7 @@
 
 ## 为什么需要它
 
-快速查看摸个 Claude Code 的进程状态和会话内容，尤其是当你有多个 Claude Code 实例在运行时。
+快速查看某个 Claude Code 的进程状态和会话内容，尤其是当你有多个 Claude Code 实例在运行时。
 
 `ccpeek` 让你：
 - 一眼看清所有 Claude Code 进程
