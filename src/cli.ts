@@ -3,6 +3,7 @@ import { Command } from "commander";
 import { detailCommand } from "./commands/detail.js";
 import { installCommand } from "./commands/install.js";
 import { listCommand } from "./commands/list.js";
+import { sessionCommand } from "./commands/session.js";
 
 const require = createRequire(import.meta.url);
 const { version } = require("../package.json");
@@ -37,6 +38,13 @@ export function createCli() {
 		.description("查看进程详细信息")
 		.action((pid) => {
 			detailCommand(pid);
+		});
+
+	program
+		.command("session [pid]")
+		.description("查看会话对话详情")
+		.action((pid) => {
+			sessionCommand(pid);
 		});
 
 	return program;
