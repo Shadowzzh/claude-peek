@@ -151,7 +151,7 @@ export function SessionViewDialog({ proc, visible }: SessionViewDialogProps) {
 			<Text dimColor> </Text>
 
 			<Box flexDirection="column">
-				{messages.map((msg) => {
+				{messages.map((msg, idx) => {
 					const isToolResult =
 						Array.isArray(msg.message?.content) &&
 						msg.message.content.some((item) => item.type === "tool_result");
@@ -171,7 +171,11 @@ export function SessionViewDialog({ proc, visible }: SessionViewDialogProps) {
 					}
 
 					return (
-						<Box key={msg.timestamp} flexDirection="column" marginBottom={1}>
+						<Box
+							key={`${msg.timestamp}-${idx}`}
+							flexDirection="column"
+							marginBottom={1}
+						>
 							<Text color={roleColor}>
 								[{roleLabel}] {formatTime(msg.timestamp)}
 							</Text>
