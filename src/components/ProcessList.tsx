@@ -25,7 +25,7 @@ export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
 				{padEndByWidth("MEM", rowWidth)}
 				{padEndByWidth("运行时长", rowWidth)}
 				{padEndByWidth("项目名", 20)}
-				{"会话"}
+				{padEndByWidth("会话", 40)}
 			</Text>
 
 			{/* 进程列表 */}

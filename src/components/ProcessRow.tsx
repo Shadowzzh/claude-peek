@@ -1,7 +1,8 @@
-import { Box, Text } from "ink";
+import { Box } from "ink";
 import React from "react";
-import { padEndByWidth } from "../lib/format.js";
+import { truncateAndPad } from "../lib/format.js";
 import type { ProcessInfo } from "../types.js";
+import { TableCell } from "./TableCell.js";
 
 interface ProcessRowProps {
 	proc: ProcessInfo;
@@ -9,21 +10,28 @@ interface ProcessRowProps {
 }
 
 export function ProcessRow({ proc, isSelected }: ProcessRowProps) {
-	const rowWidth = 10;
-	const summary = proc.session?.summary || "N/A";
-	const truncated = summary.length > 40 ? `${summary.slice(0, 37)}...` : summary;
+	const summary = (proc.session?.summary || "N/A").replace(/\s+/g, " ");
 
 	return (
-		<Text
-			backgroundColor={isSelected ? "blue" : undefined}
-			color={isSelected ? "white" : undefined}
-		>
-			{padEndByWidth(String(proc.pid), rowWidth)}
-			{padEndByWidth(String(proc.cpu), rowWidth)}
-			{padEndByWidth(String(proc.mem), rowWidth)}
-			{padEndByWidth(String(proc.etime), rowWidth)}
-			{padEndByWidth(String(proc.projectName), 20)}
-			{padEndByWidth(truncated, 40)}
-		</Text>
+		<Box flexDirection="row">
+			<TableCell width={10} isSelected={isSelected}>
+				{truncateAndPad(String(proc.pid), 10)}
+			</TableCell>
+			<TableCell width={10} isSelected={isSelected}>
+				{truncateAndPad(String(proc.cpu), 10)}
+			</TableCell>
+			<TableCell width={10} isSelected={isSelected}>
+				{truncateAndPad(String(proc.mem), 10)}
+			</TableCell>
+			<TableCell width={10} isSelected={isSelected}>
+				{truncateAndPad(String(proc.etime), 10)}
+			</TableCell>
+			<TableCell width={20} isSelected={isSelected}>
+				{truncateAndPad(proc.projectName, 20)}
+			</TableCell>
+			<TableCell width={40} isSelected={isSelected}>
+				{truncateAndPad(summary, 40)}
+			</TableCell>
+		</Box>
 	);
 }

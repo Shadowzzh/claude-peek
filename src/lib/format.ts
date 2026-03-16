@@ -29,3 +29,35 @@ export function padEndByWidth(str: string, targetWidth: number): string {
 	const padding = Math.max(0, targetWidth - currentWidth);
 	return str + " ".repeat(padding);
 }
+
+/**
+ * 截断并填充字符串到指定宽度
+ */
+export function truncateAndPad(
+	str: string,
+	targetWidth: number,
+	ellipsis = "…",
+): string {
+	const width = stringWidth(str);
+	if (width <= targetWidth) {
+		return padEndByWidth(str, targetWidth);
+	}
+
+	const ellipsisWidth = stringWidth(ellipsis);
+	const threshold = targetWidth - ellipsisWidth;
+	if (threshold < 1) return padEndByWidth(ellipsis, targetWidth);
+
+	let result = "";
+	let currentWidth = 0;
+
+	for (const char of str) {
+		const charWidth = stringWidth(char);
+		if (currentWidth + charWidth > threshold) break;
+		result += char;
+		currentWidth += charWidth;
+	}
+
+	return (
+		result + ellipsis + " ".repeat(targetWidth - currentWidth - ellipsisWidth)
+	);
+}
