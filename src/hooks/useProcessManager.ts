@@ -8,6 +8,7 @@ export function useProcessManager() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showDetail, setShowDetail] = useState(false);
+	const [showSession, setShowSession] = useState(false);
 	const { exit } = useApp();
 
 	const loadProcesses = useCallback(() => {
@@ -27,6 +28,14 @@ export function useProcessManager() {
 
 	// 键盘事件
 	useInput((input, key) => {
+		if (showSession) {
+			if (key.escape || key.return) {
+				setShowSession(false);
+			}
+			// 让 SessionViewDialog 处理上下键
+			return;
+		}
+
 		if (showDetail) {
 			if (key.upArrow) {
 				setSelectedIndex((i) => (i - 1 + processes.length) % processes.length);
@@ -56,6 +65,8 @@ export function useProcessManager() {
 			setSelectedIndex((i) => (i - 1 + processes.length) % processes.length);
 		} else if (key.downArrow || input === "j") {
 			setSelectedIndex((i) => (i + 1) % processes.length);
+		} else if (key.return && processes.length > 0) {
+			setShowSession(true);
 		} else if (input === "v" && processes.length > 0) {
 			setShowDetail(true);
 		} else if (input === "d" && processes.length > 0) {
@@ -72,6 +83,7 @@ export function useProcessManager() {
 		selectedIndex,
 		showConfirm,
 		showDetail,
+		showSession,
 		selectedProcess: processes[selectedIndex],
 	};
 }

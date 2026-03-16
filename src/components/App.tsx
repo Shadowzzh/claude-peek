@@ -5,10 +5,17 @@ import { ConfirmDialog } from "./ConfirmDialog.js";
 import { DetailDialog } from "./DetailDialog.js";
 import { HelpBar } from "./HelpBar.js";
 import { ProcessList } from "./ProcessList.js";
+import { SessionViewDialog } from "./SessionViewDialog.js";
 
 export function App() {
-	const { processes, selectedIndex, showConfirm, showDetail, selectedProcess } =
-		useProcessManager();
+	const {
+		processes,
+		selectedIndex,
+		showConfirm,
+		showDetail,
+		showSession,
+		selectedProcess,
+	} = useProcessManager();
 
 	return (
 		<Box flexDirection="column">
@@ -22,7 +29,9 @@ export function App() {
 
 			<Text dimColor> </Text>
 
-			{showDetail && selectedProcess ? (
+			{showSession && selectedProcess ? (
+				<SessionViewDialog proc={selectedProcess} visible={showSession} />
+			) : showDetail && selectedProcess ? (
 				<DetailDialog proc={selectedProcess} visible={showDetail} />
 			) : showConfirm && selectedProcess ? (
 				<ConfirmDialog pid={selectedProcess.pid} visible={showConfirm} />
