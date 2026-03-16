@@ -60,4 +60,8 @@ export class ProcessService {
 			projectName: proc.projectName,
 		};
 	}
+
+	killProcess(pid: number): void {
+		process.kill(pid, "SIGTERM");
+	}
 }
