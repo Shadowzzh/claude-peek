@@ -37,8 +37,11 @@ export function createCli() {
 	program
 		.command("messages <pid-or-path>")
 		.description("查看会话对话详情 (支持 PID 或项目路径)")
-		.action((input) => {
-			sessionCommand(input);
+		.option("--md", "以 Markdown 格式输出到 stdout")
+		.option("--save [file]", "保存为 Markdown 文件")
+		.option("--copy", "复制 Markdown 到剪贴板")
+		.action((input, options) => {
+			sessionCommand(input, options);
 		});
 
 	program

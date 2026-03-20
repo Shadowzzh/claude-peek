@@ -1,4 +1,6 @@
+import { existsSync, mkdirSync } from "node:fs";
 import chalk from "chalk";
+import clipboardy from "clipboardy";
 import { ProcessService } from "../services/ProcessService.js";
 
 function formatTime(isoString: string): string {
@@ -17,7 +19,24 @@ function formatDuration(start: string, end: string): string {
 	return `${minutes} 分 ${seconds} 秒`;
 }
 
-export function sessionCommand(pid?: string) {
+interface SessionOptions {
+	md?: boolean;
+	save?: string | boolean;
+	copy?: boolean;
+}
+
+export function sessionCommand(pid?: string, options: SessionOptions = {}) {
+	// Ensure at most one output option is used
+	const outputModes = [
+		options.md && "md",
+		options.save && "save",
+		options.copy && "copy",
+	].filter(Boolean);
+
+	if (outputModes.length > 1) {
+		console.log(chalk.red("错误: --md, --save, --copy 不能同时使用"));
+		return;
+	}
 	const service = new ProcessService();
 	const result = service.selectProcess(pid);
 
@@ -43,6 +62,62 @@ export function sessionCommand(pid?: string) {
 
 	const { messages, stats, session } = sessionData;
 
+	// Output modes: md, save, copy
+	const outputMode = options.md
+		? "md"
+		: options.save
+			? "save"
+			: options.copy
+				? "copy"
+				: null;
+
+	if (outputMode) {
+		const markdown = service.generateMarkdown(sessionData);
+
+		if (outputMode === "md") {
+			console.log(markdown);
+			return;
+		}
+
+		if (outputMode === "save") {
+			const filePath =
+				typeof options.save === "string"
+					? options.save
+					: `/tmp/ccpeek_session_${result.process.pid}_${Date.now()}.md`;
+
+			// Ensure parent directory exists
+			const dir = filePath.substring(0, filePath.lastIndexOf("/"));
+			if (dir && !existsSync(dir)) {
+				mkdirSync(dir, { recursive: true });
+			}
+
+			// Use dynamic import for fs/promises
+			import("node:fs/promises").then(({ writeFile }) => {
+				writeFile(filePath, markdown, "utf-8")
+					.then(() => {
+						console.log(chalk.green(`✓ 已保存到: ${filePath}`));
+					})
+					.catch((err) => {
+						console.error(chalk.red(`保存失败: ${err.message}`));
+					});
+			});
+			return;
+		}
+
+		if (outputMode === "copy") {
+			clipboardy
+				.write(markdown)
+				.then(() => {
+					console.log(chalk.green("✓ 已复制到剪贴板"));
+				})
+				.catch((err) => {
+					console.error(chalk.red(`复制失败: ${err.message}`));
+				});
+			return;
+		}
+	}
+
+	// Default: terminal output
 	console.log(chalk.bold.cyan(`\n会话对话 - ${session.summary}\n`));
 
 	// 统计信息

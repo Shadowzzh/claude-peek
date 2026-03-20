@@ -64,7 +64,7 @@ ccpeek messages <pid>    # 查看会话对话 (支持 PID 或项目路径)
 ccpeek kill <pid>        # 杀掉进程
 ```
 
-**messages 支持两种方式：**
+**messages 支持两种输入方式：**
 
 ```bash
 # 方式 1: 使用 PID
@@ -72,6 +72,23 @@ ccpeek messages 12345
 
 # 方式 2: 使用项目完整路径
 ccpeek messages /path/to/project
+```
+
+**messages 输出选项：**
+
+```bash
+# 默认：终端彩色输出
+ccpeek messages 12345
+
+# 输出 Markdown 到 stdout（配合重定向保存到本地）
+ccpeek messages 12345 --md > session.md
+
+# 保存为 Markdown 文件（到远程服务器）
+ccpeek messages 12345 --save session.md
+ccpeek messages 12345 --save  # 默认路径: /tmp/ccpeek_session_<pid>_<timestamp>.md
+
+# 复制 Markdown 到剪贴板（本地开发）
+ccpeek messages 12345 --copy
 ```
 
 ## 工作原理
