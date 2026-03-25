@@ -111,7 +111,7 @@ ccpeek messages 12345 --copy
 1. **SessionStart hook** (`record-session.sh`)
    - 会话启动时自动触发
    - 向上遍历进程树找到 `claude` 主进程 PID
-   - 将 `PID ↔ SessionID` 映射写入 `~/.claude/session-mappings.jsonl`
+   - 将 `PID ↔ SessionID` 映射写入 `~/.claude/ccpeek/session-mappings.jsonl`
 
 2. **SessionEnd hook** (`cleanup-session.sh`)
    - 会话结束时自动触发
@@ -119,7 +119,7 @@ ccpeek messages 12345 --copy
 
 3. **查询流程**
    - `ccpeek` 读取系统进程列表，找到所有 `claude` 进程
-   - 通过 `session-mappings.jsonl` 获取进程对应的 SessionID
+   - 通过 `~/.claude/ccpeek/session-mappings.jsonl` 获取进程对应的 SessionID
    - 从 `~/.claude/sessions/<sessionId>/` 读取会话详情和对话内容
 
 ## License

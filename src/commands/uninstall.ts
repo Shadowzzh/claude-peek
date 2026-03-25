@@ -22,7 +22,7 @@ interface Settings {
 export function uninstallCommand() {
 	const targetDir = join(homedir(), ".claude", "hooks", "ccpeek");
 	const settingsFile = join(homedir(), ".claude", "settings.json");
-	const mappingFile = join(homedir(), ".claude", "session-mappings.jsonl");
+	const ccpeekDir = join(homedir(), ".claude", "ccpeek");
 
 	// Delete script directory
 	if (existsSync(targetDir)) {
@@ -32,12 +32,12 @@ export function uninstallCommand() {
 		console.log(`- 脚本目录不存在，已跳过: ${targetDir}`);
 	}
 
-	// Delete mapping file
-	if (existsSync(mappingFile)) {
-		rmSync(mappingFile, { force: true });
-		console.log(`✓ 已删除映射文件: ${mappingFile}`);
+	// Delete ccpeek data directory
+	if (existsSync(ccpeekDir)) {
+		rmSync(ccpeekDir, { recursive: true, force: true });
+		console.log(`✓ 已删除数据目录: ${ccpeekDir}`);
 	} else {
-		console.log(`- 映射文件不存在，已跳过: ${mappingFile}`);
+		console.log(`- 数据目录不存在，已跳过: ${ccpeekDir}`);
 	}
 
 	// Clean up settings.json

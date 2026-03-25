@@ -8,7 +8,12 @@ import type { SessionInfo } from "../types.js";
  */
 export function getSessionIdFromPid(pid: number): string | null {
 	try {
-		const mappingPath = join(homedir(), ".claude", "session-mappings.jsonl");
+		const mappingPath = join(
+			homedir(),
+			".claude",
+			"ccpeek",
+			"session-mappings.jsonl",
+		);
 		if (!existsSync(mappingPath)) {
 			return null;
 		}

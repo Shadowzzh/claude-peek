@@ -28,7 +28,7 @@ interface Settings {
 
 const RECORD_SESSION_SCRIPT = `#!/bin/bash
 
-MAPPING_FILE="$HOME/.claude/session-mappings.jsonl"
+MAPPING_FILE="$HOME/.claude/ccpeek/session-mappings.jsonl"
 
 if ! command -v jq &> /dev/null; then
     exit 0
@@ -61,7 +61,7 @@ echo "{\\"pid\\":$claude_pid,\\"sessionId\\":\\"$session_id\\",\\"timestamp\\":$
 
 const CLEANUP_SESSION_SCRIPT = `#!/bin/bash
 
-MAPPING_FILE="$HOME/.claude/session-mappings.jsonl"
+MAPPING_FILE="$HOME/.claude/ccpeek/session-mappings.jsonl"
 
 if ! command -v jq &> /dev/null; then
     exit 0
@@ -83,10 +83,15 @@ mv "$temp_file" "$MAPPING_FILE"
 export function installCommand() {
 	const targetDir = join(homedir(), ".claude", "hooks", "ccpeek");
 	const settingsFile = join(homedir(), ".claude", "settings.json");
-	const mappingFile = join(homedir(), ".claude", "session-mappings.jsonl");
+	const ccpeekDir = join(homedir(), ".claude", "ccpeek");
+	const mappingFile = join(ccpeekDir, "session-mappings.jsonl");
 
 	if (!existsSync(targetDir)) {
 		mkdirSync(targetDir, { recursive: true });
+	}
+
+	if (!existsSync(ccpeekDir)) {
+		mkdirSync(ccpeekDir, { recursive: true });
 	}
 
 	if (existsSync(mappingFile)) {
