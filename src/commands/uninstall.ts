@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { t } from "../i18n/index.js";
 
 interface Hook {
 	type: string;
@@ -27,22 +28,22 @@ export function uninstallCommand() {
 	// Delete script directory
 	if (existsSync(targetDir)) {
 		rmSync(targetDir, { recursive: true, force: true });
-		console.log(`✓ 已删除脚本目录: ${targetDir}`);
+		console.log(t("uninstall.dirRemoved", { path: targetDir }));
 	} else {
-		console.log(`- 脚本目录不存在，已跳过: ${targetDir}`);
+		console.log(t("uninstall.dirNotFound", { path: targetDir }));
 	}
 
 	// Delete ccpeek data directory
 	if (existsSync(ccpeekDir)) {
 		rmSync(ccpeekDir, { recursive: true, force: true });
-		console.log(`✓ 已删除数据目录: ${ccpeekDir}`);
+		console.log(t("uninstall.dirRemoved", { path: ccpeekDir }));
 	} else {
-		console.log(`- 数据目录不存在，已跳过: ${ccpeekDir}`);
+		console.log(t("uninstall.dirNotFound", { path: ccpeekDir }));
 	}
 
 	// Clean up settings.json
 	if (!existsSync(settingsFile)) {
-		console.log(`- 配置文件不存在，已跳过: ${settingsFile}`);
+		console.log(t("uninstall.configNotFound", { path: settingsFile }));
 		return;
 	}
 
@@ -82,11 +83,11 @@ export function uninstallCommand() {
 
 		if (modified) {
 			writeFileSync(settingsFile, JSON.stringify(settings, null, 2));
-			console.log(`✓ 已更新配置: ${settingsFile}`);
-		} else {
-			console.log("- 配置文件中没有 ccpeek 相关的 hooks");
+			console.log(t("uninstall.configUpdated", { path: settingsFile }));
 		}
+
+		console.log(t("uninstall.complete"));
 	} catch (error) {
-		console.error(`✗ 处理配置文件时出错: ${error}`);
+		console.error(`✗ Error: ${error}`);
 	}
 }

@@ -1,5 +1,6 @@
 import { Box, Text } from "ink";
 import React from "react";
+import { t } from "../i18n/index.js";
 
 interface ConfirmDialogProps {
 	pid: number;
@@ -11,7 +12,7 @@ export function ConfirmDialog({ pid, visible }: ConfirmDialogProps) {
 
 	return (
 		<Box borderStyle="round" borderColor="red" padding={1}>
-			<Text color="red">确认杀死进程 {pid}? (y/回车:确认 n/Esc:取消)</Text>
+			<Text color="red">{t("tui.confirm.kill", { pid })}</Text>
 		</Box>
 	);
 }

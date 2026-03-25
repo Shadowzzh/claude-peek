@@ -1,5 +1,6 @@
 import { Box, Text } from "ink";
 import React from "react";
+import { t } from "../i18n/index.js";
 import { padEndByWidth } from "../lib/format.js";
 import type { ProcessInfo } from "../types.js";
 import { ProcessRow } from "./ProcessRow.js";
@@ -13,19 +14,19 @@ export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
 	const rowWidth = 10;
 
 	if (processes.length === 0) {
-		return <Text color="yellow">未找到运行中的 Claude Code 进程</Text>;
+		return <Text color="yellow">{t("tui.messages.noProcess")}</Text>;
 	}
 
 	return (
 		<Box flexDirection="column">
 			{/* 表头 */}
 			<Text bold color="gray">
-				{padEndByWidth("PID", rowWidth)}
-				{padEndByWidth("CPU", rowWidth)}
-				{padEndByWidth("MEM", rowWidth)}
-				{padEndByWidth("运行时长", rowWidth)}
-				{padEndByWidth("项目名", 20)}
-				{padEndByWidth("会话", 40)}
+				{padEndByWidth(t("tui.table.pid"), rowWidth)}
+				{padEndByWidth(t("tui.table.cpu"), rowWidth)}
+				{padEndByWidth(t("tui.table.mem"), rowWidth)}
+				{padEndByWidth(t("tui.table.uptime"), rowWidth)}
+				{padEndByWidth(t("tui.table.project"), 20)}
+				{padEndByWidth(t("tui.table.session"), 40)}
 			</Text>
 
 			{/* 进程列表 */}

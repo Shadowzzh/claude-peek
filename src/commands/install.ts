@@ -7,6 +7,7 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { t } from "../i18n/index.js";
 
 interface Hook {
 	type: string;
@@ -89,26 +90,26 @@ export function installCommand() {
 	// Create hooks directory
 	if (!existsSync(targetDir)) {
 		mkdirSync(targetDir, { recursive: true });
-		console.log(`✓ 已创建脚本目录: ${targetDir}`);
+		console.log(t("install.dirCreated", { path: targetDir }));
 	} else {
-		console.log(`- 脚本目录已存在: ${targetDir}`);
+		console.log(t("install.dirExists", { path: targetDir }));
 	}
 
 	// Create ccpeek data directory
 	if (!existsSync(ccpeekDir)) {
 		mkdirSync(ccpeekDir, { recursive: true });
-		console.log(`✓ 已创建数据目录: ${ccpeekDir}`);
+		console.log(t("install.dataCreated", { path: ccpeekDir }));
 	} else {
-		console.log(`- 数据目录已存在: ${ccpeekDir}`);
+		console.log(t("install.dataExists", { path: ccpeekDir }));
 	}
 
 	// Initialize mapping file
 	if (existsSync(mappingFile)) {
 		writeFileSync(mappingFile, "");
-		console.log(`✓ 已清空映射文件: ${mappingFile}`);
+		console.log(t("install.mappingCleared", { path: mappingFile }));
 	} else {
 		writeFileSync(mappingFile, "");
-		console.log(`✓ 已创建映射文件: ${mappingFile}`);
+		console.log(t("install.mappingCreated", { path: mappingFile }));
 	}
 
 	const scripts = [
@@ -119,7 +120,7 @@ export function installCommand() {
 	for (const { name, content } of scripts) {
 		const target = join(targetDir, name);
 		writeFileSync(target, content, { mode: 0o755 });
-		console.log(`✓ 已安装: ${target}`);
+		console.log(t("install.scriptInstalled", { path: target }));
 	}
 
 	let settings: Settings = {};
@@ -164,5 +165,5 @@ export function installCommand() {
 	settings.SessionEnd = undefined;
 
 	writeFileSync(settingsFile, JSON.stringify(settings, null, 2));
-	console.log(`\n✓ 已更新配置: ${settingsFile}`);
+	console.log(t("install.configUpdated", { path: settingsFile }));
 }

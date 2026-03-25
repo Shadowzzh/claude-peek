@@ -1,8 +1,17 @@
 import { Text } from "ink";
 import React from "react";
+import { t } from "../i18n/index.js";
 
 export function HelpBar() {
-	return (
-		<Text dimColor>↑:上移 ↓:下移 Enter:会话 v:详情 d:删除 r:刷新 q:退出</Text>
-	);
+	const help = [
+		t("tui.help.up"),
+		t("tui.help.down"),
+		t("tui.help.enter"),
+		t("tui.help.view"),
+		t("tui.help.delete"),
+		t("tui.help.refresh"),
+		t("tui.help.quit"),
+	].join(" ");
+
+	return <Text dimColor>{help}</Text>;
 }

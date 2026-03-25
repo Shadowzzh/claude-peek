@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { t } from "../i18n/index.js";
 import { padEndByWidth, truncateAndPad } from "../lib/format.js";
 import { ProcessService } from "../services/ProcessService.js";
 
@@ -12,16 +13,16 @@ export function listCommand(options: { json?: boolean }) {
 	}
 
 	if (processes.length === 0) {
-		console.log(chalk.yellow("未找到运行中的 Claude Code 进程"));
+		console.log(chalk.yellow(t("tui.messages.noProcess")));
 		return;
 	}
 
-	console.log(chalk.bold("\nClaude Code 进程:\n"));
+	console.log(chalk.bold("\nClaude Code:\n"));
 
 	// 表头
 	console.log(
 		chalk.cyan(
-			`${padEndByWidth("PID", 8)}${padEndByWidth("CPU", 8)}${padEndByWidth("MEM", 8)}${padEndByWidth("进程运行", 12)}${padEndByWidth("项目名", 20)}会话`,
+			`${padEndByWidth(t("tui.table.pid"), 8)}${padEndByWidth(t("tui.table.cpu"), 8)}${padEndByWidth(t("tui.table.mem"), 8)}${padEndByWidth(t("tui.table.uptime"), 12)}${padEndByWidth(t("tui.table.project"), 20)}${t("tui.table.session")}`,
 		),
 	);
 	console.log(chalk.gray("─".repeat(80)));
@@ -36,5 +37,7 @@ export function listCommand(options: { json?: boolean }) {
 	}
 
 	console.log(chalk.gray(`\n${"─".repeat(80)}`));
-	console.log(chalk.green(`\n总计: ${processes.length} 个进程\n`));
+	console.log(
+		chalk.green(`\n${t("tui.messages.total", { count: processes.length })}\n`),
+	);
 }
