@@ -86,17 +86,29 @@ export function installCommand() {
 	const ccpeekDir = join(homedir(), ".claude", "ccpeek");
 	const mappingFile = join(ccpeekDir, "session-mappings.jsonl");
 
+	// Create hooks directory
 	if (!existsSync(targetDir)) {
 		mkdirSync(targetDir, { recursive: true });
+		console.log(`✓ 已创建脚本目录: ${targetDir}`);
+	} else {
+		console.log(`- 脚本目录已存在: ${targetDir}`);
 	}
 
+	// Create ccpeek data directory
 	if (!existsSync(ccpeekDir)) {
 		mkdirSync(ccpeekDir, { recursive: true });
+		console.log(`✓ 已创建数据目录: ${ccpeekDir}`);
+	} else {
+		console.log(`- 数据目录已存在: ${ccpeekDir}`);
 	}
 
+	// Initialize mapping file
 	if (existsSync(mappingFile)) {
 		writeFileSync(mappingFile, "");
-		console.log("✓ 已清空旧的映射文件");
+		console.log(`✓ 已清空映射文件: ${mappingFile}`);
+	} else {
+		writeFileSync(mappingFile, "");
+		console.log(`✓ 已创建映射文件: ${mappingFile}`);
 	}
 
 	const scripts = [
