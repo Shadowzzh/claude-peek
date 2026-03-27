@@ -7,9 +7,7 @@
 	"bin": {
 		"ccpeek": "dist/index.js"
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"scripts": {
 		"dev": "tsx src/index.ts",
 		"build": "tsup",
@@ -19,12 +17,7 @@
 		"typecheck": "tsc --noEmit",
 		"all": "pnpm format && pnpm typecheck && pnpm lint"
 	},
-	"keywords": [
-		"claude",
-		"tui",
-		"terminal",
-		"process-manager"
-	],
+	"keywords": ["claude", "tui", "terminal", "process-manager"],
 	"author": "ziheng",
 	"license": "MIT",
 	"dependencies": {
@@ -45,5 +38,13 @@
 	},
 	"engines": {
 		"node": ">=18"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Shadowzzh/claude-peek.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Shadowzzh/claude-peek/issues"
+	},
+	"homepage": "https://github.com/Shadowzzh/claude-peek#readme"
 }
