@@ -73,6 +73,39 @@ export default {
 		current: "Current language: {lang}",
 		invalid: "Invalid language. Use: zh or en",
 	},
+	session: {
+		errors: {
+			multipleOutputModes:
+				"Error: --md, --save, --copy cannot be used together",
+			projectNotFound: 'Project path "{path}" not found',
+			noHistorySessions: "No history sessions for this project",
+			sessionNotFound: 'Session ID "{sessionId}" not found',
+			noSessionInfo: "This process has no session information",
+			noRunningProcesses: "No running Claude Code processes found",
+			processNotFound: 'No process matching "{input}" found',
+			multipleProcesses:
+				"Multiple processes found, please specify PID or path:",
+			saveFailed: "Save failed: {error}",
+			copyFailed: "Copy failed: {error}",
+		},
+		success: {
+			saved: "✓ Saved to: {path}",
+			copied: "✓ Copied to clipboard",
+		},
+		display: {
+			sessionTitle: "\nSession - {summary} {source}\n",
+			sourceRunning: "[Running PID:{pid}]",
+			sourceHistory: "[History]",
+			historyTitle: "\nHistory Sessions - {project}\n",
+			statistics: "Statistics:",
+			messages: "  Messages: {total} (User: {user}, AI: {ai})",
+			tokens: "  Tokens: Input {input} / Output {output}",
+			duration: "  Duration: {minutes}m {seconds}s",
+			thinking: "  Thinking: {count} times",
+			tools: "  Tools: {tools}",
+			history: "\nConversation History ({count} messages):\n",
+		},
+	},
 	file: {
 		errors: {
 			noPath: "Error: Please provide .jsonl file path",

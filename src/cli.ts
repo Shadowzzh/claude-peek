@@ -44,8 +44,8 @@ export function createCli() {
 		.option("--md", t("cli.options.md"))
 		.option("--save [file]", t("cli.options.save"))
 		.option("--copy", t("cli.options.copy"))
-		.action((input, sessionId, options) => {
-			sessionCommand(input, { ...options, sessionId });
+		.action(async (input, sessionId, options) => {
+			await sessionCommand(input, { ...options, sessionId });
 		});
 
 	program

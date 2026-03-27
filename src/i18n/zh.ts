@@ -73,6 +73,37 @@ export default {
 		current: "当前语言: {lang}",
 		invalid: "无效的语言。请使用: zh 或 en",
 	},
+	session: {
+		errors: {
+			multipleOutputModes: "错误: --md, --save, --copy 不能同时使用",
+			projectNotFound: '项目路径 "{path}" 不存在',
+			noHistorySessions: "该项目没有历史会话",
+			sessionNotFound: '未找到会话 ID "{sessionId}"',
+			noSessionInfo: "该进程没有会话信息",
+			noRunningProcesses: "未找到运行中的 Claude Code 进程",
+			processNotFound: '未找到匹配 "{input}" 的进程',
+			multipleProcesses: "存在多个进程，请指定 PID 或路径:",
+			saveFailed: "保存失败: {error}",
+			copyFailed: "复制失败: {error}",
+		},
+		success: {
+			saved: "✓ 已保存到: {path}",
+			copied: "✓ 已复制到剪贴板",
+		},
+		display: {
+			sessionTitle: "\n会话对话 - {summary} {source}\n",
+			sourceRunning: "[运行中 PID:{pid}]",
+			sourceHistory: "[历史会话]",
+			historyTitle: "\n历史会话 - {project}\n",
+			statistics: "统计信息:",
+			messages: "  消息: {total} (用户: {user}, AI: {ai})",
+			tokens: "  Token: 输入 {input} / 输出 {output}",
+			duration: "  对话时长: {minutes} 分 {seconds} 秒",
+			thinking: "  思考: {count} 次",
+			tools: "  工具: {tools}",
+			history: "\n对话历史 (共 {count} 条):\n",
+		},
+	},
 	file: {
 		errors: {
 			noPath: "错误: 请提供 .jsonl 文件路径",
