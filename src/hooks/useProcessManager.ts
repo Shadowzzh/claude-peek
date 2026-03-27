@@ -1,5 +1,6 @@
 import { useApp, useInput } from "ink";
 import { useCallback, useEffect, useState } from "react";
+import { INTERVALS } from "../constants/index.js";
 import { getClaudeProcesses, killProcess } from "../lib/process.js";
 import type { ProcessInfo } from "../types.js";
 
@@ -37,7 +38,7 @@ export function useProcessManager() {
 
 	useEffect(() => {
 		loadProcesses();
-		const interval = setInterval(loadProcesses, 3000);
+		const interval = setInterval(loadProcesses, INTERVALS.PROCESS_REFRESH);
 		return () => clearInterval(interval);
 	}, [loadProcesses]);
 
@@ -47,7 +48,10 @@ export function useProcessManager() {
 				setShowSession(false);
 			} else if (input === "c") {
 				setShowCopySuccess(true);
-				setTimeout(() => setShowCopySuccess(false), 2000);
+				setTimeout(
+					() => setShowCopySuccess(false),
+					INTERVALS.COPY_SUCCESS_NOTIFICATION,
+				);
 			}
 			return;
 		}

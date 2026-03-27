@@ -1,6 +1,9 @@
 import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
+import {
+	CCPEEK_DIR,
+	CCPEEK_HOOKS_DIR,
+	SETTINGS_FILE,
+} from "../constants/index.js";
 import { t } from "../i18n/index.js";
 
 interface Hook {
@@ -21,37 +24,33 @@ interface Settings {
 }
 
 export function uninstallCommand() {
-	const targetDir = join(homedir(), ".claude", "hooks", "ccpeek");
-	const settingsFile = join(homedir(), ".claude", "settings.json");
-	const ccpeekDir = join(homedir(), ".claude", "ccpeek");
-
 	// Delete script directory
-	if (existsSync(targetDir)) {
-		rmSync(targetDir, { recursive: true, force: true });
-		console.log(t("uninstall.dirRemoved", { path: targetDir }));
+	if (existsSync(CCPEEK_HOOKS_DIR)) {
+		rmSync(CCPEEK_HOOKS_DIR, { recursive: true, force: true });
+		console.log(t("uninstall.dirRemoved", { path: CCPEEK_HOOKS_DIR }));
 	} else {
-		console.log(t("uninstall.dirNotFound", { path: targetDir }));
+		console.log(t("uninstall.dirNotFound", { path: CCPEEK_HOOKS_DIR }));
 	}
 
 	// Delete ccpeek data directory
-	if (existsSync(ccpeekDir)) {
-		rmSync(ccpeekDir, { recursive: true, force: true });
-		console.log(t("uninstall.dirRemoved", { path: ccpeekDir }));
+	if (existsSync(CCPEEK_DIR)) {
+		rmSync(CCPEEK_DIR, { recursive: true, force: true });
+		console.log(t("uninstall.dirRemoved", { path: CCPEEK_DIR }));
 	} else {
-		console.log(t("uninstall.dirNotFound", { path: ccpeekDir }));
+		console.log(t("uninstall.dirNotFound", { path: CCPEEK_DIR }));
 	}
 
 	// Clean up settings.json
-	if (!existsSync(settingsFile)) {
-		console.log(t("uninstall.configNotFound", { path: settingsFile }));
+	if (!existsSync(SETTINGS_FILE)) {
+		console.log(t("uninstall.configNotFound", { path: SETTINGS_FILE }));
 		return;
 	}
 
 	try {
-		const settings: Settings = JSON.parse(readFileSync(settingsFile, "utf-8"));
+		const settings: Settings = JSON.parse(readFileSync(SETTINGS_FILE, "utf-8"));
 
 		if (!settings.hooks) {
-			console.log("- 配置文件中没有 hooks 配置");
+			console.log(t("uninstall.noHooksConfig"));
 			return;
 		}
 
@@ -82,8 +81,8 @@ export function uninstallCommand() {
 		}
 
 		if (modified) {
-			writeFileSync(settingsFile, JSON.stringify(settings, null, 2));
-			console.log(t("uninstall.configUpdated", { path: settingsFile }));
+			writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+			console.log(t("uninstall.configUpdated", { path: SETTINGS_FILE }));
 		}
 
 		console.log(t("uninstall.complete"));

@@ -1,6 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
-import { homedir } from "node:os";
 import { join } from "node:path";
+import {
+	HISTORY_FILE,
+	SESSION_MAPPINGS_FILE,
+	getProjectDir,
+} from "../constants/index.js";
 import type { SessionInfo } from "../types.js";
 
 /**
@@ -8,17 +12,11 @@ import type { SessionInfo } from "../types.js";
  */
 export function getSessionIdFromPid(pid: number): string | null {
 	try {
-		const mappingPath = join(
-			homedir(),
-			".claude",
-			"ccpeek",
-			"session-mappings.jsonl",
-		);
-		if (!existsSync(mappingPath)) {
+		if (!existsSync(SESSION_MAPPINGS_FILE)) {
 			return null;
 		}
 
-		const content = readFileSync(mappingPath, "utf-8");
+		const content = readFileSync(SESSION_MAPPINGS_FILE, "utf-8");
 		const lines = content.trim().split("\n").reverse();
 
 		// 从后往前查找匹配 PID 的记录
@@ -61,12 +59,11 @@ export function getSessionIdFromProcess(
  */
 function getSessionIdFromHistory(projectPath: string): string | null {
 	try {
-		const historyPath = join(homedir(), ".claude", "history.jsonl");
-		if (!existsSync(historyPath)) {
+		if (!existsSync(HISTORY_FILE)) {
 			return null;
 		}
 
-		const content = readFileSync(historyPath, "utf-8");
+		const content = readFileSync(HISTORY_FILE, "utf-8");
 		const lines = content.trim().split("\n");
 
 		// 从后往前查找匹配项目路径的记录
@@ -92,12 +89,11 @@ function getSessionIdFromHistory(projectPath: string): string | null {
  */
 function getLastUserMessage(sessionId: string): string | null {
 	try {
-		const historyPath = join(homedir(), ".claude", "history.jsonl");
-		if (!existsSync(historyPath)) {
+		if (!existsSync(HISTORY_FILE)) {
 			return null;
 		}
 
-		const content = readFileSync(historyPath, "utf-8");
+		const content = readFileSync(HISTORY_FILE, "utf-8");
 		const lines = content.trim().split("\n");
 
 		// 从后往前查找匹配会话 ID 的最后一条记录
@@ -180,12 +176,5 @@ export function getSessionInfo(
  * 获取会话文件路径
  */
 function getSessionFilePath(projectPath: string, sessionId: string): string {
-	const projectKey = projectPath.replace(/\//g, "-");
-	return join(
-		homedir(),
-		".claude",
-		"projects",
-		projectKey,
-		`${sessionId}.jsonl`,
-	);
+	return join(getProjectDir(projectPath), `${sessionId}.jsonl`);
 }

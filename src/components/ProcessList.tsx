@@ -1,5 +1,6 @@
 import { Box, Text } from "ink";
 import React from "react";
+import { COLUMN_WIDTHS, LIST_ROW_WIDTH } from "../constants/index.js";
 import { t } from "../i18n/index.js";
 import { padEndByWidth } from "../lib/format.js";
 import type { ProcessInfo } from "../types.js";
@@ -11,8 +12,6 @@ interface ProcessListProps {
 }
 
 export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
-	const rowWidth = 10;
-
 	if (processes.length === 0) {
 		return <Text color="yellow">{t("tui.messages.noProcess")}</Text>;
 	}
@@ -21,12 +20,12 @@ export function ProcessList({ processes, selectedIndex }: ProcessListProps) {
 		<Box flexDirection="column">
 			{/* 表头 */}
 			<Text bold color="gray">
-				{padEndByWidth(t("tui.table.pid"), rowWidth)}
-				{padEndByWidth(t("tui.table.cpu"), rowWidth)}
-				{padEndByWidth(t("tui.table.mem"), rowWidth)}
-				{padEndByWidth(t("tui.table.uptime"), rowWidth)}
-				{padEndByWidth(t("tui.table.project"), 20)}
-				{padEndByWidth(t("tui.table.session"), 40)}
+				{padEndByWidth(t("tui.table.pid"), LIST_ROW_WIDTH)}
+				{padEndByWidth(t("tui.table.cpu"), LIST_ROW_WIDTH)}
+				{padEndByWidth(t("tui.table.mem"), LIST_ROW_WIDTH)}
+				{padEndByWidth(t("tui.table.uptime"), LIST_ROW_WIDTH)}
+				{padEndByWidth(t("tui.table.project"), COLUMN_WIDTHS.PROJECT)}
+				{padEndByWidth(t("tui.table.session"), COLUMN_WIDTHS.SESSION)}
 			</Text>
 
 			{/* 进程列表 */}

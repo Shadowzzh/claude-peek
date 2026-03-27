@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { SEPARATOR_LENGTH } from "../constants/index.js";
 import { ProcessService } from "../services/ProcessService.js";
 import type { ProcessInfo } from "../types.js";
 
@@ -28,7 +29,7 @@ export function detailCommand(pid?: string) {
 	for (const proc of processes) {
 		printProcessDetail(proc);
 		if (processes.indexOf(proc) < processes.length - 1) {
-			console.log(chalk.gray(`\n${"─".repeat(80)}\n`));
+			console.log(chalk.gray(`\n${"─".repeat(SEPARATOR_LENGTH)}\n`));
 		}
 	}
 }

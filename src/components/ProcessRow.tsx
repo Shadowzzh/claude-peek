@@ -1,5 +1,6 @@
 import { Box } from "ink";
 import React from "react";
+import { COLUMN_WIDTHS } from "../constants/index.js";
 import { truncateAndPad } from "../lib/format.js";
 import type { ProcessInfo } from "../types.js";
 import { TableCell } from "./TableCell.js";
@@ -14,23 +15,23 @@ export function ProcessRow({ proc, isSelected }: ProcessRowProps) {
 
 	return (
 		<Box flexDirection="row">
-			<TableCell width={10} isSelected={isSelected}>
-				{truncateAndPad(String(proc.pid), 10)}
+			<TableCell width={COLUMN_WIDTHS.PID} isSelected={isSelected}>
+				{truncateAndPad(String(proc.pid), COLUMN_WIDTHS.PID)}
 			</TableCell>
-			<TableCell width={10} isSelected={isSelected}>
-				{truncateAndPad(String(proc.cpu), 10)}
+			<TableCell width={COLUMN_WIDTHS.CPU} isSelected={isSelected}>
+				{truncateAndPad(String(proc.cpu), COLUMN_WIDTHS.CPU)}
 			</TableCell>
-			<TableCell width={10} isSelected={isSelected}>
-				{truncateAndPad(String(proc.mem), 10)}
+			<TableCell width={COLUMN_WIDTHS.MEM} isSelected={isSelected}>
+				{truncateAndPad(String(proc.mem), COLUMN_WIDTHS.MEM)}
 			</TableCell>
-			<TableCell width={10} isSelected={isSelected}>
-				{truncateAndPad(String(proc.etime), 10)}
+			<TableCell width={COLUMN_WIDTHS.UPTIME} isSelected={isSelected}>
+				{truncateAndPad(String(proc.etime), COLUMN_WIDTHS.UPTIME)}
 			</TableCell>
-			<TableCell width={20} isSelected={isSelected}>
-				{truncateAndPad(proc.projectName, 20)}
+			<TableCell width={COLUMN_WIDTHS.PROJECT} isSelected={isSelected}>
+				{truncateAndPad(proc.projectName, COLUMN_WIDTHS.PROJECT)}
 			</TableCell>
-			<TableCell width={40} isSelected={isSelected}>
-				{truncateAndPad(summary, 40)}
+			<TableCell width={COLUMN_WIDTHS.SESSION} isSelected={isSelected}>
+				{truncateAndPad(summary, COLUMN_WIDTHS.SESSION)}
 			</TableCell>
 		</Box>
 	);

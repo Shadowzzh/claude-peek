@@ -5,8 +5,17 @@ import {
 	readFileSync,
 	writeFileSync,
 } from "node:fs";
-import { homedir } from "node:os";
 import { join } from "node:path";
+import {
+	CCPEEK_DIR,
+	CCPEEK_HOOKS_DIR,
+	CLEANUP_SESSION_HOOK_PATH,
+	CLEANUP_SESSION_SCRIPT,
+	RECORD_SESSION_HOOK_PATH,
+	RECORD_SESSION_SCRIPT,
+	SESSION_MAPPINGS_FILE,
+	SETTINGS_FILE,
+} from "../constants/index.js";
 import { t } from "../i18n/index.js";
 
 interface Hook {
@@ -27,89 +36,30 @@ interface Settings {
 	SessionEnd?: unknown;
 }
 
-const RECORD_SESSION_SCRIPT = `#!/bin/bash
-
-MAPPING_FILE="$HOME/.claude/ccpeek/session-mappings.jsonl"
-
-if ! command -v jq &> /dev/null; then
-    exit 0
-fi
-
-# Read stdin to get session info
-stdin_data=$(cat)
-session_id=$(echo "$stdin_data" | jq -r '.session_id // empty' 2>/dev/null)
-[ -z "$session_id" ] && exit 0
-
-find_claude_pid() {
-    local current_pid=$$
-    while [ "$current_pid" -ne 1 ] && [ -n "$current_pid" ]; do
-        local cmd=$(ps -o comm= -p "$current_pid" 2>/dev/null | tr -d ' ')
-        if [ "$cmd" = "claude" ]; then
-            echo "$current_pid"
-            return 0
-        fi
-        current_pid=$(ps -o ppid= -p "$current_pid" 2>/dev/null | tr -d ' ')
-    done
-    return 1
-}
-
-claude_pid=$(find_claude_pid)
-[ -z "$claude_pid" ] && exit 0
-
-mkdir -p "$(dirname "$MAPPING_FILE")"
-echo "{\\"pid\\":$claude_pid,\\"sessionId\\":\\"$session_id\\",\\"timestamp\\":$(date +%s)}" >> "$MAPPING_FILE"
-`;
-
-const CLEANUP_SESSION_SCRIPT = `#!/bin/bash
-
-MAPPING_FILE="$HOME/.claude/ccpeek/session-mappings.jsonl"
-
-if ! command -v jq &> /dev/null; then
-    exit 0
-fi
-
-[ ! -f "$MAPPING_FILE" ] && exit 0
-
-temp_file=$(mktemp)
-while IFS= read -r line; do
-    pid=$(echo "$line" | jq -r '.pid')
-    if ps -p "$pid" > /dev/null 2>&1; then
-        echo "$line" >> "$temp_file"
-    fi
-done < "$MAPPING_FILE"
-
-mv "$temp_file" "$MAPPING_FILE"
-`;
-
 export function installCommand() {
-	const targetDir = join(homedir(), ".claude", "hooks", "ccpeek");
-	const settingsFile = join(homedir(), ".claude", "settings.json");
-	const ccpeekDir = join(homedir(), ".claude", "ccpeek");
-	const mappingFile = join(ccpeekDir, "session-mappings.jsonl");
-
 	// Create hooks directory
-	if (!existsSync(targetDir)) {
-		mkdirSync(targetDir, { recursive: true });
-		console.log(t("install.dirCreated", { path: targetDir }));
+	if (!existsSync(CCPEEK_HOOKS_DIR)) {
+		mkdirSync(CCPEEK_HOOKS_DIR, { recursive: true });
+		console.log(t("install.dirCreated", { path: CCPEEK_HOOKS_DIR }));
 	} else {
-		console.log(t("install.dirExists", { path: targetDir }));
+		console.log(t("install.dirExists", { path: CCPEEK_HOOKS_DIR }));
 	}
 
 	// Create ccpeek data directory
-	if (!existsSync(ccpeekDir)) {
-		mkdirSync(ccpeekDir, { recursive: true });
-		console.log(t("install.dataCreated", { path: ccpeekDir }));
+	if (!existsSync(CCPEEK_DIR)) {
+		mkdirSync(CCPEEK_DIR, { recursive: true });
+		console.log(t("install.dataCreated", { path: CCPEEK_DIR }));
 	} else {
-		console.log(t("install.dataExists", { path: ccpeekDir }));
+		console.log(t("install.dataExists", { path: CCPEEK_DIR }));
 	}
 
 	// Initialize mapping file
-	if (existsSync(mappingFile)) {
-		writeFileSync(mappingFile, "");
-		console.log(t("install.mappingCleared", { path: mappingFile }));
+	if (existsSync(SESSION_MAPPINGS_FILE)) {
+		writeFileSync(SESSION_MAPPINGS_FILE, "");
+		console.log(t("install.mappingCleared", { path: SESSION_MAPPINGS_FILE }));
 	} else {
-		writeFileSync(mappingFile, "");
-		console.log(t("install.mappingCreated", { path: mappingFile }));
+		writeFileSync(SESSION_MAPPINGS_FILE, "");
+		console.log(t("install.mappingCreated", { path: SESSION_MAPPINGS_FILE }));
 	}
 
 	const scripts = [
@@ -118,14 +68,14 @@ export function installCommand() {
 	];
 
 	for (const { name, content } of scripts) {
-		const target = join(targetDir, name);
+		const target = join(CCPEEK_HOOKS_DIR, name);
 		writeFileSync(target, content, { mode: 0o755 });
 		console.log(t("install.scriptInstalled", { path: target }));
 	}
 
 	let settings: Settings = {};
-	if (existsSync(settingsFile)) {
-		settings = JSON.parse(readFileSync(settingsFile, "utf-8"));
+	if (existsSync(SETTINGS_FILE)) {
+		settings = JSON.parse(readFileSync(SETTINGS_FILE, "utf-8"));
 	}
 
 	settings.hooks = settings.hooks || {};
@@ -134,11 +84,11 @@ export function installCommand() {
 
 	const recordHook: Hook = {
 		type: "command",
-		command: "~/.claude/hooks/ccpeek/record-session.sh",
+		command: RECORD_SESSION_HOOK_PATH,
 	};
 	const cleanupHook: Hook = {
 		type: "command",
-		command: "~/.claude/hooks/ccpeek/cleanup-session.sh",
+		command: CLEANUP_SESSION_HOOK_PATH,
 	};
 
 	const startEntry = settings.hooks.SessionStart.find((e) =>
@@ -164,6 +114,6 @@ export function installCommand() {
 	settings.SessionStart = undefined;
 	settings.SessionEnd = undefined;
 
-	writeFileSync(settingsFile, JSON.stringify(settings, null, 2));
-	console.log(t("install.configUpdated", { path: settingsFile }));
+	writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+	console.log(t("install.configUpdated", { path: SETTINGS_FILE }));
 }

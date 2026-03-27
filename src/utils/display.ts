@@ -1,11 +1,11 @@
 import chalk from "chalk";
+import {
+	MAX_THINKING_PREVIEW,
+	MAX_TOOL_PARAMS_PREVIEW,
+	MAX_TOOL_RESULT_PREVIEW,
+} from "../constants/index.js";
 import { t } from "../i18n/index.js";
 import type { SessionData } from "../services/ProcessService.js";
-
-// Constants for preview limits
-const MAX_THINKING_PREVIEW = 100;
-const MAX_TOOL_RESULT_PREVIEW = 200;
-const MAX_TOOL_PARAMS_PREVIEW = 100;
 
 /**
  * Format ISO timestamp to time string

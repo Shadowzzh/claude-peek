@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { SEPARATOR_LENGTH } from "../constants/index.js";
 import { t } from "../i18n/index.js";
 import { padEndByWidth, truncateAndPad } from "../lib/format.js";
 import { ProcessService } from "../services/ProcessService.js";
@@ -25,7 +26,7 @@ export function listCommand(options: { json?: boolean }) {
 			`${padEndByWidth(t("tui.table.pid"), 8)}${padEndByWidth(t("tui.table.cpu"), 8)}${padEndByWidth(t("tui.table.mem"), 8)}${padEndByWidth(t("tui.table.uptime"), 12)}${padEndByWidth(t("tui.table.project"), 20)}${t("tui.table.session")}`,
 		),
 	);
-	console.log(chalk.gray("─".repeat(80)));
+	console.log(chalk.gray("─".repeat(SEPARATOR_LENGTH)));
 
 	// 进程列表
 	for (const proc of processes) {
@@ -36,7 +37,7 @@ export function listCommand(options: { json?: boolean }) {
 		);
 	}
 
-	console.log(chalk.gray(`\n${"─".repeat(80)}`));
+	console.log(chalk.gray(`\n${"─".repeat(SEPARATOR_LENGTH)}`));
 	console.log(
 		chalk.green(`\n${t("tui.messages.total", { count: processes.length })}\n`),
 	);

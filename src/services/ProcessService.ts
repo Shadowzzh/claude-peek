@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { homedir } from "node:os";
 import { basename, join } from "node:path";
+import { FILE_EXTENSION, getProjectDir } from "../constants/index.js";
 import { getClaudeProcesses } from "../lib/process.js";
 import { calculateStats, parseSessionMessages } from "../lib/sessionParser.js";
 import type { HistorySession, ProcessInfo, SessionInfo } from "../types.js";
@@ -86,8 +86,7 @@ export class ProcessService {
 	 * Get project directory path from project path
 	 */
 	#getProjectDir(projectPath: string): string | null {
-		const projectKey = projectPath.replace(/\//g, "-");
-		const projectDir = join(homedir(), ".claude", "projects", projectKey);
+		const projectDir = getProjectDir(projectPath);
 		if (!existsSync(projectDir)) {
 			return null;
 		}
@@ -110,7 +109,7 @@ export class ProcessService {
 
 			for (const entry of entries) {
 				// Only process .jsonl files (session files)
-				if (!entry.isFile() || !entry.name.endsWith(".jsonl")) {
+				if (!entry.isFile() || !entry.name.endsWith(FILE_EXTENSION)) {
 					continue;
 				}
 

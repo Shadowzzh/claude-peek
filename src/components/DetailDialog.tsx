@@ -1,5 +1,7 @@
 import { Box, Text } from "ink";
 import React, { useEffect, useMemo } from "react";
+import { BORDER_STYLE, COLORS, INTERVALS } from "../constants/index.js";
+import { t } from "../i18n/index.js";
 import { ProcessService, isProcessFound } from "../services/ProcessService.js";
 
 interface DetailDialogProps {
@@ -21,7 +23,7 @@ export function DetailDialog({ pid, visible, onClose }: DetailDialogProps) {
 			if (!isProcessFound(check)) {
 				onClose();
 			}
-		}, 1000);
+		}, INTERVALS.PROCESS_CHECK);
 
 		return () => clearInterval(interval);
 	}, [pid, visible, onClose]);
@@ -33,12 +35,12 @@ export function DetailDialog({ pid, visible, onClose }: DetailDialogProps) {
 	return (
 		<Box
 			flexDirection="column"
-			borderStyle="round"
-			borderColor="cyan"
+			borderStyle={BORDER_STYLE}
+			borderColor={COLORS.PRIMARY}
 			padding={1}
 		>
-			<Text bold color="cyan">
-				进程详情
+			<Text bold color={COLORS.PRIMARY}>
+				{t("tui.detail.title")}
 			</Text>
 			<Text dimColor> </Text>
 
@@ -65,8 +67,8 @@ export function DetailDialog({ pid, visible, onClose }: DetailDialogProps) {
 			</Text>
 
 			<Text dimColor> </Text>
-			<Text bold color="cyan">
-				会话信息
+			<Text bold color={COLORS.PRIMARY}>
+				{t("tui.detail.sessionInfo")}
 			</Text>
 			<Text dimColor> </Text>
 
@@ -88,11 +90,11 @@ export function DetailDialog({ pid, visible, onClose }: DetailDialogProps) {
 					</Text>
 				</>
 			) : (
-				<Text color="yellow">未找到会话信息</Text>
+				<Text color={COLORS.WARNING}>{t("tui.detail.sessionNotFound")}</Text>
 			)}
 
 			<Text dimColor> </Text>
-			<Text dimColor>按 ESC 或 v 关闭</Text>
+			<Text dimColor>{t("tui.detail.closeHint")}</Text>
 		</Box>
 	);
 }

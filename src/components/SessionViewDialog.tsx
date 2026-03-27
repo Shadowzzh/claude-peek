@@ -2,6 +2,13 @@ import clipboard from "clipboardy";
 import { Box, Text } from "ink";
 import type React from "react";
 import { useEffect, useMemo } from "react";
+import {
+	COLORS,
+	INTERVALS,
+	MESSAGE_TYPE_COLORS,
+	SESSION_PREVIEW_LENGTHS,
+} from "../constants/index.js";
+import { t } from "../i18n/index.js";
 import { ProcessService, isProcessFound } from "../services/ProcessService.js";
 import type { MessageContent } from "../types.js";
 
@@ -52,23 +59,26 @@ function renderMessageContent(
 				);
 			} else if (item.type === "thinking" && showThinking && item.thinking) {
 				const thinkingText =
-					item.thinking.length > 100
-						? `${item.thinking.substring(0, 100)}...`
+					item.thinking.length > SESSION_PREVIEW_LENGTHS.LONG
+						? `${item.thinking.substring(0, SESSION_PREVIEW_LENGTHS.LONG)}...`
 						: item.thinking;
 				elements.push(
 					<Text
 						key={`thinking-${idx}-${item.thinking.substring(0, 20)}`}
-						color="yellow"
+						color={MESSAGE_TYPE_COLORS.THINKING}
 					>
 						[THINKING] {thinkingText}
 					</Text>,
 				);
 			} else if (item.type === "tool_use" && showTools && item.name) {
 				const params = item.input
-					? ` ${JSON.stringify(item.input).substring(0, 100)}`
+					? ` ${JSON.stringify(item.input).substring(0, SESSION_PREVIEW_LENGTHS.LONG)}`
 					: "";
 				elements.push(
-					<Text key={`tool-${idx}-${item.name}`} color="cyan">
+					<Text
+						key={`tool-${idx}-${item.name}`}
+						color={MESSAGE_TYPE_COLORS.TOOL}
+					>
 						[TOOL] {item.name}
 						{params}
 					</Text>,
@@ -76,12 +86,17 @@ function renderMessageContent(
 			} else if (item.type === "tool_result" && showTools) {
 				const resultContent =
 					typeof item.content === "string"
-						? item.content.substring(0, 200)
-						: JSON.stringify(item.content).substring(0, 200);
+						? item.content.substring(0, SESSION_PREVIEW_LENGTHS.EXTRA_LONG)
+						: JSON.stringify(item.content).substring(
+								0,
+								SESSION_PREVIEW_LENGTHS.EXTRA_LONG,
+							);
 				elements.push(
 					<Text key={`result-${item.tool_use_id || idx}`} dimColor>
 						{resultContent}
-						{resultContent.length >= 200 ? "..." : ""}
+						{resultContent.length >= SESSION_PREVIEW_LENGTHS.EXTRA_LONG
+							? "..."
+							: ""}
 					</Text>,
 				);
 			}
@@ -107,7 +122,7 @@ export function SessionViewDialog({
 			if (!isProcessFound(check)) {
 				onClose();
 			}
-		}, 1000);
+		}, INTERVALS.PROCESS_CHECK);
 
 		return () => clearInterval(interval);
 	}, [pid, visible, onClose]);
@@ -131,8 +146,9 @@ export function SessionViewDialog({
 
 	return (
 		<Box flexDirection="column" paddingY={1}>
-			<Text bold color="cyan">
-				会话对话 - {session.summary.substring(0, 50)}
+			<Text bold color={COLORS.PRIMARY}>
+				{t("tui.session.title")} -{" "}
+				{session.summary.substring(0, SESSION_PREVIEW_LENGTHS.MEDIUM)}
 			</Text>
 			<Text dimColor> </Text>
 
@@ -168,8 +184,8 @@ export function SessionViewDialog({
 			</Box>
 
 			<Text dimColor> </Text>
-			<Text bold color="magenta">
-				对话历史 (共 {messages.length} 条):
+			<Text bold color={COLORS.HIGHLIGHT}>
+				{t("tui.session.history", { count: messages.length })}
 			</Text>
 			<Text dimColor> </Text>
 
@@ -184,13 +200,13 @@ export function SessionViewDialog({
 
 					if (isToolResult) {
 						roleLabel = "TOOL_RESULT";
-						roleColor = "magenta";
+						roleColor = MESSAGE_TYPE_COLORS.TOOL_RESULT;
 					} else if (msg.type === "user") {
 						roleLabel = "USER";
-						roleColor = "green";
+						roleColor = MESSAGE_TYPE_COLORS.USER;
 					} else {
 						roleLabel = "AI";
-						roleColor = "blue";
+						roleColor = MESSAGE_TYPE_COLORS.AI;
 					}
 
 					return (
@@ -210,8 +226,10 @@ export function SessionViewDialog({
 			</Box>
 
 			<Text dimColor> </Text>
-			<Text dimColor>按 ESC 或 Enter 关闭 | 按 c 复制为 Markdown</Text>
-			{showCopySuccess && <Text color="green">✓ 已复制到剪贴板</Text>}
+			<Text dimColor>{t("tui.session.closeHint")}</Text>
+			{showCopySuccess && (
+				<Text color={COLORS.SUCCESS}>{t("tui.session.copySuccess")}</Text>
+			)}
 		</Box>
 	);
 }

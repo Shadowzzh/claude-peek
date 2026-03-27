@@ -1,15 +1,13 @@
 import { existsSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import chalk from "chalk";
+import { FILE_EXTENSION, MAX_FILE_SIZE } from "../constants/index.js";
 import { t } from "../i18n/index.js";
 import { ProcessService } from "../services/ProcessService.js";
 import type { SessionData } from "../services/ProcessService.js";
 import { renderMessage, renderStats } from "../utils/display.js";
 import { handleOutput } from "../utils/output.js";
 import type { OutputMode } from "../utils/output.js";
-
-// Constants
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
 interface FileOptions {
 	md?: boolean;
@@ -81,7 +79,7 @@ export async function fileCommand(
 	}
 
 	// Check file extension
-	if (!resolvedPath.endsWith(".jsonl")) {
+	if (!resolvedPath.endsWith(FILE_EXTENSION)) {
 		console.log(chalk.red(t("file.errors.invalidFormat")));
 		return;
 	}

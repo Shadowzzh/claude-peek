@@ -1,13 +1,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
-import { join } from "node:path";
+import { CONFIG_DIR, CONFIG_FILE } from "../constants/index.js";
 
 interface Config {
 	language?: "zh" | "en";
 }
-
-const CONFIG_DIR = join(homedir(), ".claude", "ccpeek");
-const CONFIG_FILE = join(CONFIG_DIR, "config.json");
 
 export function readConfig(): Config {
 	if (!existsSync(CONFIG_FILE)) {

@@ -50,6 +50,18 @@ export default {
 			noProcess: "未找到运行中的 Claude Code 进程",
 			total: "总计: {count} 个进程",
 		},
+		detail: {
+			title: "进程详情",
+			sessionInfo: "会话信息",
+			sessionNotFound: "未找到会话信息",
+			closeHint: "按 ESC 或 v 关闭",
+		},
+		session: {
+			title: "会话对话",
+			history: "对话历史 (共 {count} 条):",
+			closeHint: "按 ESC 或 Enter 关闭 | 按 c 复制为 Markdown",
+			copySuccess: "✓ 已复制到剪贴板",
+		},
 	},
 	install: {
 		dirCreated: "✓ 已创建脚本目录: {path}",
@@ -66,6 +78,7 @@ export default {
 		dirNotFound: "- 目录不存在: {path}",
 		configUpdated: "✓ 已更新配置: {path}",
 		configNotFound: "- 配置文件不存在: {path}",
+		noHooksConfig: "- 配置文件中没有 hooks 配置",
 		complete: "\n✓ 卸载完成",
 	},
 	config: {

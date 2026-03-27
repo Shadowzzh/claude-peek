@@ -50,6 +50,18 @@ export default {
 			noProcess: "No running Claude Code processes found",
 			total: "Total: {count} process(es)",
 		},
+		detail: {
+			title: "Process Detail",
+			sessionInfo: "Session Info",
+			sessionNotFound: "No session info found",
+			closeHint: "Press ESC or v to close",
+		},
+		session: {
+			title: "Session Messages",
+			history: "Conversation History ({count} messages):",
+			closeHint: "Press ESC or Enter to close | Press c to copy as Markdown",
+			copySuccess: "✓ Copied to clipboard",
+		},
 	},
 	install: {
 		dirCreated: "✓ Created directory: {path}",
@@ -66,6 +78,7 @@ export default {
 		dirNotFound: "- Directory not found: {path}",
 		configUpdated: "✓ Updated configuration: {path}",
 		configNotFound: "- Configuration file not found: {path}",
+		noHooksConfig: "- No hooks configuration found in config file",
 		complete: "\n✓ Uninstall complete",
 	},
 	config: {

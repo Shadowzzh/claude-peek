@@ -1,3 +1,5 @@
+import { MAX_TEXT_SUMMARY_LENGTH } from "../constants/index.js";
+
 /**
  * Extract text content from message content
  */
@@ -41,5 +43,8 @@ export function cleanMarkdown(text: string): string {
  */
 export function extractSummary(text: string): string {
 	const cleaned = cleanMarkdown(text);
-	return cleaned.substring(0, 50) + (cleaned.length > 50 ? "..." : "");
+	return (
+		cleaned.substring(0, MAX_TEXT_SUMMARY_LENGTH) +
+		(cleaned.length > MAX_TEXT_SUMMARY_LENGTH ? "..." : "")
+	);
 }
